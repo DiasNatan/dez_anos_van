@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#090909">
+  <title>143 · Dez anos, Vanessa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #090909; --surface: #171717; --surface-2: #202020; --text: #f4f1ef;
+      --muted: #a6a19e; --line: #393634; --button: #55514f; --button-text: #fff;
+      --pink: #f2bfd0; --purple: #77518d; --beige: #f1e3ce; --paper: #fffaf4;
+      --display: "Playfair Display", Georgia, serif; --body: "DM Sans", system-ui, sans-serif;
+      --mono: "DM Mono", ui-monospace, monospace;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; min-height: 100vh; color: var(--text); background: var(--bg); font: 16px/1.65 var(--body);
+      transition: color 1s ease, background 1.2s ease;
+      padding: max(28px, env(safe-area-inset-top)) max(18px, env(safe-area-inset-right)) max(44px, env(safe-area-inset-bottom)) max(18px, env(safe-area-inset-left));
+    }
+    body.unlocked {
+      --text: #453443; --muted: #786c77; --surface: #fffaf4; --line: #d9c7c7;
+      --button: #77518d; --button-text: #fff;
+      color: #3f3042; color-scheme: light;
+      background: radial-gradient(ellipse at 88% 8%, #eadcf0 0, transparent 35%), radial-gradient(ellipse at 8% 32%, #f8dce6 0, transparent 40%), linear-gradient(160deg, #f8e8e9, #f2e4d3 65%, #eee0d2);
+    }
+    button, input { font: inherit; }
+    button { -webkit-tap-highlight-color: transparent; }
+    .wrap { width: min(100%, 740px); margin: 0 auto; }
+    #butterflies { position: fixed; inset: 0; z-index: 4; width: 100%; height: 100%; pointer-events: none; opacity: 0; transition: opacity 1.2s ease; }
+    body.unlocked #butterflies { opacity: .88; }
+    .hero { min-height: min(76vh, 700px); display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 23px; position: relative; z-index: 2; }
+    .eyebrow { color: var(--muted); font: 12px/1.4 var(--mono); letter-spacing: .16em; text-transform: uppercase; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { max-width: 620px; margin-bottom: 0; font: 400 clamp(2rem, 7vw, 4.1rem)/1.12 var(--display); letter-spacing: -.035em; }
+    .hero-note { margin: -7px 0 0; color: var(--muted); }
+    .pager { color: var(--text); font: 500 clamp(4rem, 15vw, 7rem)/.95 var(--mono); letter-spacing: .04em; }
+    .gate { width: min(100%, 500px); display: grid; gap: 11px; }
+    .gate label { font-weight: 600; }
+    .row { display: flex; gap: 9px; }
+    .gate input { min-width: 0; flex: 1; padding: 13px 15px; color: var(--text); background: var(--surface); border: 1px solid var(--line); border-radius: 9px; outline: none; }
+    .gate input:focus-visible { border-color: #aaa29d; box-shadow: 0 0 0 3px #aaa29d30; }
+    .gate button, .music-button { padding: 12px 18px; border: 1px solid #6a6562; border-radius: 9px; color: var(--button-text); background: var(--button); font-weight: 700; cursor: pointer; transition: filter .2s, transform .2s; }
+    .gate button:hover, .music-button:hover { filter: brightness(1.14); }
+    button:active { transform: translateY(1px); }
+    button:focus-visible, a:focus-visible { outline: 3px solid #b5a3c2; outline-offset: 3px; }
+    .message { min-height: 1.5em; margin: 0; color: var(--muted); font-size: .92rem; }
+    #unlocked { position: relative; z-index: 2; display: grid; gap: 64px; padding-top: 20px; }
+    #unlocked[hidden] { display: none; }
+    .fade-in { animation: arrive .8s ease both; }
+    @keyframes arrive { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+    .section-kicker { color: var(--purple); font: 12px var(--mono); letter-spacing: .15em; text-transform: uppercase; }
+    .letter { padding: clamp(24px, 6vw, 54px); border: 1px solid #d9c7c7; border-radius: 14px; background: color-mix(in srgb, var(--paper) 88%, transparent); box-shadow: 0 18px 50px #64425a12; }
+    .letter h2 { margin: 8px 0 28px; font: 500 clamp(1.9rem, 6vw, 3rem)/1.2 var(--display); }
+    .letter p { max-width: 62ch; margin-bottom: 20px; }
+    .letter .salute { font: 500 1.35rem var(--display); }
+    .letter .sign { margin: 28px 0 0; color: var(--purple); font: 500 1.25rem var(--display); }
+    .code { display: inline-block; vertical-align: baseline; padding: 1px 8px; border: 1px solid #bca9c5; border-radius: 6px; color: #563d69; background: #eee5f1; font: 500 .96em var(--mono); cursor: pointer; }
+    .code:hover { background: #e2d2e9; }
+    .meaning { display: none; color: #77518d; font-weight: 600; }
+    .code[aria-expanded="true"] + .meaning { display: inline; }
+    .code[aria-expanded="false"]::after { content: " ?"; opacity: .6; }
+    .clock-section { padding-top: 22px; border-top: 1px solid #bcaeb8; }
+    .clock-section h2, .gallery h2 { margin: 5px 0 20px; font: 500 clamp(1.7rem, 5vw, 2.5rem)/1.2 var(--display); }
+    .clock-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+    .clock-card { min-width: 0; padding: 14px 10px; border: 1px solid #dfcdd5; border-radius: 12px; background: #fff8f3bb; text-align: center; }
+    .clock-card strong { display: block; overflow-wrap: anywhere; color: var(--purple); font: 500 clamp(1.15rem, 4vw, 2rem)/1.15 var(--mono); font-variant-numeric: tabular-nums; }
+    .clock-card span { color: #766977; font-size: .82rem; }
+    .clock-note { margin: 12px 0 0; color: #766977; font-size: .88rem; }
+    .gallery { display: grid; gap: 17px; }
+    .years { display: flex; gap: 8px; padding: 2px 2px 8px; overflow-x: auto; scrollbar-width: thin; }
+    .year-button { flex: 0 0 auto; padding: 8px 12px; border: 1px solid #c8b7c6; border-radius: 999px; color: #59495d; background: #fff8f366; cursor: pointer; }
+    .year-button[aria-pressed="true"] { border-color: var(--purple); color: white; background: var(--purple); }
+    .year-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+    .year-heading h3 { margin: 0; font: 500 1.35rem var(--display); }
+    .photo-count { color: #766977; font: 13px var(--mono); white-space: nowrap; }
+    .photo-frame { position: relative; width: 100%; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 13px; background: #e6d9d8; box-shadow: 0 15px 40px #50375218; }
+    .photo-frame img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity .65s ease; }
+    .photo-frame img.is-visible { opacity: 1; }
+    .gallery-nav { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+    .arrow { width: 46px; height: 46px; border: 1px solid #bca9c5; border-radius: 50%; color: #563d69; background: #fff8f3aa; font-size: 1.35rem; cursor: pointer; }
+    .arrow:disabled { opacity: .35; cursor: default; }
+    .photo-index { min-width: 5ch; color: #59495d; font: 14px var(--mono); text-align: center; }
+    .music-control { position: fixed; right: max(16px, env(safe-area-inset-right)); bottom: max(16px, env(safe-area-inset-bottom)); z-index: 8; }
+    .music-button { display: none; border-color: #a991b0; color: white; background: var(--purple); box-shadow: 0 7px 25px #301e3c35; }
+    body.unlocked .music-button { display: inline-flex; align-items: center; gap: 8px; }
+    footer { padding-top: 12px; color: #766977; font: 13px var(--mono); letter-spacing: .12em; text-align: center; }
+    @media (max-width: 520px) {
+      body { font-size: 15px; }
+      .hero { min-height: 72svh; gap: 19px; }
+      .row { flex-direction: column; }
+      .gate button { width: 100%; }
+      #unlocked { gap: 48px; }
+      .clock-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .clock-card:last-child { grid-column: 1 / -1; }
+      .photo-frame { aspect-ratio: 3 / 4; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="butterflies" aria-hidden="true"></canvas>
+  <main class="wrap">
+    <header class="hero">
+      <div class="eyebrow">02 · 11 · 2016</div>
+      <h1>Dez anos, três números.</h1>
+      <p class="hero-note">Antes de abrir a carta, decifre a mensagem.</p>
+      <div class="pager" aria-label="um, quatro, três">143</div>
+      <form class="gate" id="gate" autocomplete="off">
+        <label for="answer">O que significa 143?</label>
+        <div class="row">
+          <input id="answer" type="text" placeholder="Escreva sua resposta" autocapitalize="none" spellcheck="false" enterkeyhint="go" aria-describedby="gate-message">
+          <button type="submit" id="submit-answer">Decifrar</button>
+        </div>
+        <p class="message" id="gate-message" aria-live="polite"></p>
+      </form>
+    </header>
+
+    <div id="unlocked" hidden>
+      <article class="letter" aria-labelledby="letter-title">
+        <div class="section-kicker">Uma carta para você</div>
+        <h2 id="letter-title">Dez anos de nós</h2>
+        <p class="salute">Vanessa, meu amor,</p>
+        <p>Hoje, 02/11, fazem dez anos desde que nos conhecemos. Dez anos e eu continuo precisando de apenas três números para dizer o que sinto: <button class="code" type="button" aria-expanded="false">143</button><span class="meaning"> eu te amo.</span></p>
+        <p>Sei que você responderia <button class="code" type="button" aria-expanded="false">1432</button><span class="meaning"> eu te amo também.</span> Eu ouço isso mesmo quando você não fala.</p>
+        <p>Quando penso em nós, penso em <button class="code" type="button" aria-expanded="false">224</button><span class="meaning"> hoje, amanhã, sempre.</span> E se você me perguntar até quando, a resposta é <button class="code" type="button" aria-expanded="false">1437</button><span class="meaning"> eu te amo para sempre.</span></p>
+        <p>Se o mundo inteiro falasse mandarim, eu diria <button class="code" type="button" aria-expanded="false">520</button><span class="meaning"> wǒ ài nǐ, eu te amo.</span> E se o código tivesse que durar a vida inteira, seria <button class="code" type="button" aria-expanded="false">5201314</button><span class="meaning"> eu te amo por toda a vida.</span></p>
+        <p>Obrigado pela companhia nesses anos. Vamos em frente pelos próximos.</p>
+        <p class="sign">Com todo o meu amor.<br>Natan</p>
+      </article>
+
+      <section class="clock-section" aria-labelledby="clock-title">
+        <div class="section-kicker">Desde que nos conhecemos</div>
+        <h2 id="clock-title">Nosso tempo</h2>
+        <div class="clock-grid" aria-live="off">
+          <div class="clock-card"><strong id="years">0</strong><span>anos completos</span></div>
+          <div class="clock-card"><strong id="months">0</strong><span>meses totais</span></div>
+          <div class="clock-card"><strong id="weeks">0</strong><span>semanas totais</span></div>
+          <div class="clock-card"><strong id="days">0</strong><span>dias totais</span></div>
+          <div class="clock-card"><strong id="hours">0</strong><span>horas totais</span></div>
+        </div>
+        <p class="clock-note">Dez anos que viraram tantos momentos — e a contagem continua.</p>
+      </section>
+
+      <section class="gallery" aria-labelledby="gallery-title">
+        <div>
+          <div class="section-kicker">Um álbum da nossa história</div>
+          <h2 id="gallery-title">Nossos anos</h2>
+        </div>
+        <nav class="years" id="years-nav" aria-label="Escolha um ano"></nav>
+        <div class="year-heading"><h3 id="year-title"></h3><span class="photo-count" id="photo-count"></span></div>
+        <div class="photo-frame" id="photo-frame"><img class="photo-image" alt="" decoding="async"><img class="photo-image" alt="" decoding="async"></div>
+        <div class="gallery-nav">
+          <button class="arrow" id="previous-photo" type="button" aria-label="Foto anterior">←</button>
+          <span class="photo-index" id="photo-index" aria-live="polite"></span>
+          <button class="arrow" id="next-photo" type="button" aria-label="Próxima foto">→</button>
+        </div>
+      </section>
+      <footer>224 · 1437</footer>
+    </div>
+  </main>
+
+  <div class="music-control"><button class="music-button" id="music-toggle" type="button" aria-pressed="false"><span aria-hidden="true">♫</span><span id="music-label">Tocar música</span></button></div>
+  <audio id="song" loop preload="none">
+    <source src="Music/Interstellar%20-%20Hans%20Zimmer.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    // Lista explícita das fotos: páginas estáticas não conseguem enumerar arquivos de uma pasta.
+    const YEARS = [
+      { label: "2016–2017", folder: "2016-2017", count: 6, extensions: { 2: "jpeg", 3: "JPG", 4: "JPG" } },
+      { label: "2017–2018", folder: "2017-2018", count: 13 },
+      { label: "2018–2019", folder: "2018-2019", count: 18, extensions: { 18: "jpeg" } },
+      { label: "2019–2020", folder: "2019-2020", count: 9 },
+      { label: "2020–2021", folder: "2020-2021", count: 12 },
+      { label: "2021–2022", folder: "2021-2022", count: 18 },
+      { label: "2022–2023", folder: "2022-2023", count: 9 },
+      { label: "2023–2024", folder: "2023-2024", count: 22 },
+      { label: "2024–2025", folder: "2024-2025", count: 27 },
+      { label: "2025–2026", folder: "2025-2026", count: 14 }
+    ].map(year => ({
+      ...year,
+      photos: Array.from({ length: year.count }, (_, index) => {
+        const number = index + 1;
+        const extension = year.extensions?.[number] || "jpg";
+        return `${year.folder}/${String(number).padStart(2, "0")}.${extension}`;
+      })
+    }));
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const gate = document.getElementById("gate");
+    const answer = document.getElementById("answer");
+    const gateMessage = document.getElementById("gate-message");
+    const unlocked = document.getElementById("unlocked");
+    const audio = document.getElementById("song");
+    const musicToggle = document.getElementById("music-toggle");
+    const musicLabel = document.getElementById("music-label");
+    let hasUnlocked = false;
+
+    gate.addEventListener("submit", event => {
+      event.preventDefault();
+      const resposta = answer.value.toLowerCase().trim().replace(/\s+/g, " ");
+      if (resposta === "eu te amo") {
+        unlock();
+      } else {
+        gateMessage.textContent = answer.value.trim() ? "Ainda não. Pense no que 1, 4 e 3 representam." : "Escreva sua resposta para decifrar o código.";
+        answer.select();
+      }
+    });
+
+    function unlock() {
+      if (hasUnlocked) return;
+      hasUnlocked = true;
+      document.body.classList.add("unlocked");
+      document.querySelector('meta[name="theme-color"]').content = "#f8e8e9";
+      gateMessage.textContent = "Isso mesmo, Vanessa. A carta é sua.";
+      gateMessage.style.color = "#77518d";
+      answer.readOnly = true;
+      document.getElementById("submit-answer").hidden = true;
+      unlocked.hidden = false;
+      unlocked.classList.add("fade-in");
+      document.querySelectorAll(".code").forEach(button => button.addEventListener("click", () => {
+        button.setAttribute("aria-expanded", button.getAttribute("aria-expanded") === "true" ? "false" : "true");
+      }));
+      startCounter();
+      buildGallery();
+      startButterflies();
+      audio.play().then(updateMusicButton).catch(updateMusicButton);
+      window.setTimeout(() => unlocked.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" }), 280);
+    }
+
+    function updateMusicButton() {
+      const playing = !audio.paused;
+      musicToggle.setAttribute("aria-pressed", String(playing));
+      musicLabel.textContent = playing ? "Pausar música" : "Tocar música";
+    }
+    musicToggle.addEventListener("click", () => {
+      if (audio.paused) audio.play().then(updateMusicButton).catch(updateMusicButton);
+      else { audio.pause(); updateMusicButton(); }
+    });
+    audio.addEventListener("play", updateMusicButton);
+    audio.addEventListener("pause", updateMusicButton);
+
+    // A base é 02/11/2016 às 16h30 em Fortaleza (UTC−3), guardada em UTC.
+    const metAt = Date.UTC(2016, 10, 2, 19, 30, 0);
+    const number = value => Math.floor(value).toLocaleString("pt-BR");
+    function updateCounter() {
+      const now = Date.now();
+      const elapsed = Math.max(0, now - metAt);
+      const start = new Date(metAt);
+      const current = new Date(now);
+      let totalMonths = (current.getUTCFullYear() - start.getUTCFullYear()) * 12 + current.getUTCMonth() - start.getUTCMonth();
+      if (current.getUTCDate() < 2 || (current.getUTCDate() === 2 && (current.getUTCHours() < 19 || (current.getUTCHours() === 19 && current.getUTCMinutes() < 30)))) totalMonths--;
+      document.getElementById("years").textContent = number(Math.floor(totalMonths / 12));
+      document.getElementById("months").textContent = number(Math.max(0, totalMonths));
+      document.getElementById("weeks").textContent = number(elapsed / (7 * 86400000));
+      document.getElementById("days").textContent = number(elapsed / 86400000);
+      document.getElementById("hours").textContent = number(elapsed / 3600000);
+    }
+    function startCounter() { updateCounter(); window.setInterval(updateCounter, 1000); }
+
+    let activeYear = 0;
+    let activePhoto = 0;
+    let photoTimer = null;
+    const PHOTO_INTERVAL = 8000;
+    const yearNav = document.getElementById("years-nav");
+    const photoFrame = document.getElementById("photo-frame");
+    const photoImages = Array.from(photoFrame.querySelectorAll(".photo-image"));
+    let photoRenderId = 0;
+    function buildGallery() {
+      yearNav.replaceChildren();
+      YEARS.forEach((year, index) => {
+        const button = document.createElement("button");
+        button.type = "button"; button.className = "year-button"; button.textContent = year.label;
+        button.setAttribute("aria-pressed", String(index === activeYear));
+        button.addEventListener("click", () => showYear(index));
+        yearNav.appendChild(button);
+      });
+      showYear(0);
+      document.getElementById("previous-photo").addEventListener("click", () => movePhoto(-1));
+      document.getElementById("next-photo").addEventListener("click", () => movePhoto(1));
+      document.addEventListener("keydown", event => {
+        if (event.key === "ArrowLeft" && unlocked.contains(document.activeElement)) movePhoto(-1);
+        if (event.key === "ArrowRight" && unlocked.contains(document.activeElement)) movePhoto(1);
+      });
+      let touchStartX = 0;
+      photoFrame.addEventListener("touchstart", event => { touchStartX = event.changedTouches[0].screenX; }, { passive: true });
+      photoFrame.addEventListener("touchend", event => {
+        const delta = event.changedTouches[0].screenX - touchStartX;
+        if (Math.abs(delta) > 45) movePhoto(delta < 0 ? 1 : -1);
+      }, { passive: true });
+    }
+    function showYear(index) {
+      activeYear = Math.max(0, Math.min(YEARS.length - 1, index));
+      activePhoto = 0;
+      Array.from(yearNav.children).forEach((button, i) => button.setAttribute("aria-pressed", String(i === activeYear)));
+      document.getElementById("year-title").textContent = YEARS[activeYear].label;
+      document.getElementById("photo-count").textContent = `${YEARS[activeYear].photos.length} ${YEARS[activeYear].photos.length === 1 ? "foto" : "fotos"}`;
+      showPhoto(0);
+    }
+    function showPhoto(index) {
+      const photos = YEARS[activeYear].photos;
+      activePhoto = (index + photos.length) % photos.length;
+      const renderId = ++photoRenderId;
+      const currentImage = photoImages.find(image => image.classList.contains("is-visible"));
+      const nextImage = currentImage ? photoImages.find(image => image !== currentImage) : photoImages[0];
+      const file = photos[activePhoto];
+      nextImage.alt = `Foto ${activePhoto + 1} de ${photos.length}, período ${YEARS[activeYear].label}`;
+      nextImage.onload = () => {
+        if (renderId !== photoRenderId) return;
+        requestAnimationFrame(() => {
+          if (renderId !== photoRenderId) return;
+          currentImage?.classList.remove("is-visible");
+          nextImage.classList.add("is-visible");
+        });
+      };
+      nextImage.onerror = () => {
+        if (renderId === photoRenderId) nextImage.alt = `Não foi possível carregar ${file}`;
+      };
+      nextImage.src = `img/${file.split("/").map(encodeURIComponent).join("/")}`;
+      document.getElementById("photo-index").textContent = `${activePhoto + 1} / ${photos.length}`;
+      document.getElementById("previous-photo").disabled = false;
+      document.getElementById("next-photo").disabled = false;
+      clearTimeout(photoTimer);
+      photoTimer = window.setTimeout(() => showPhoto(activePhoto + 1), PHOTO_INTERVAL);
+    }
+    function movePhoto(delta) { showPhoto(activePhoto + delta); }
+
+    const canvas = document.getElementById("butterflies");
+    const context = canvas.getContext("2d");
+    let width = 0, height = 0, butterflies = [], animationFrame = 0, lastFrame = 0;
+    const butterflyColors = [["#a47ab6", "#e8b6cf"], ["#c782a4", "#f0d1bd"], ["#86639e", "#f4c4d3"], ["#d69aad", "#cbb4df"]];
+    function resizeCanvas() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth; height = window.innerHeight;
+      canvas.width = Math.round(width * dpr); canvas.height = Math.round(height * dpr);
+      context.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    function createButterfly(x, y) {
+      return { x, y, angle: Math.random() * Math.PI * 2, speed: 15 + Math.random() * 24, size: .48 + Math.random() * .42, phase: Math.random() * 6.28, flap: 2.3 + Math.random() * 2.5, color: butterflyColors[Math.floor(Math.random() * butterflyColors.length)] };
+    }
+    function drawOne(b) {
+      const flap = .22 + .78 * Math.abs(Math.sin(b.phase));
+      context.save(); context.translate(b.x, b.y); context.rotate(b.angle + Math.PI / 2); context.scale(b.size, b.size); context.globalAlpha = .86; context.lineWidth = .8; context.strokeStyle = "#70536d88";
+      for (const side of [-1, 1]) {
+        context.save(); context.scale(side * flap, 1);
+        context.fillStyle = b.color[1]; context.beginPath(); context.moveTo(0, 0); context.bezierCurveTo(15, 1, 24, 13, 18, 23); context.bezierCurveTo(12, 29, 3, 18, 0, 6); context.closePath(); context.fill(); context.stroke();
+        context.fillStyle = b.color[0]; context.beginPath(); context.moveTo(0, -2); context.bezierCurveTo(10, -27, 34, -27, 28, -7); context.bezierCurveTo(24, 1, 10, 3, 0, 1); context.closePath(); context.fill(); context.stroke(); context.restore();
+      }
+      context.fillStyle = "#624a60"; context.beginPath(); context.ellipse(0, 1, 1.5, 9, 0, 0, Math.PI * 2); context.fill(); context.restore();
+    }
+    function drawButterflies() { context.clearRect(0, 0, width, height); butterflies.forEach(drawOne); }
+    function animateButterflies(timestamp) {
+      const dt = Math.min(.05, (timestamp - lastFrame) / 1000 || 0); lastFrame = timestamp;
+      butterflies.forEach(b => {
+        b.angle += (Math.random() - .5) * dt * .7;
+        b.x += Math.cos(b.angle) * b.speed * dt;
+        b.y += Math.sin(b.angle) * b.speed * dt + Math.sin(timestamp / 1600 + b.phase) * 5 * dt;
+        b.phase += b.flap * dt;
+        if (b.x < -45) b.x = width + 45; if (b.x > width + 45) b.x = -45;
+        if (b.y < -45) b.y = height + 45; if (b.y > height + 45) b.y = -45;
+      });
+      drawButterflies(); animationFrame = requestAnimationFrame(animateButterflies);
+    }
+    function startButterflies() {
+      resizeCanvas();
+      const total = Math.max(6, Math.min(11, Math.round(width / 130)));
+      butterflies = Array.from({ length: total }, () => createButterfly(Math.random() * width, Math.random() * height));
+      lastFrame = performance.now();
+      animationFrame = requestAnimationFrame(animateButterflies);
+    }
+    window.addEventListener("resize", () => { resizeCanvas(); if (hasUnlocked) { cancelAnimationFrame(animationFrame); lastFrame = performance.now(); animationFrame = requestAnimationFrame(animateButterflies); } });
+  </script>
+</body>
+</html>
